@@ -4,5 +4,5 @@ export interface Converter<T> {
 
 export interface Data {
     [key: string]: any
-    convertTo<T>(value: any, converter: Converter<T>): T
+    convertTo<T>(converter: new () => Converter<T>): T
 }

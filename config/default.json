@@ -1,0 +1,8 @@
+{
+    "providers": {
+        "mock": {
+            "user": "test",
+            "password": "pwd"
+        }
+    }
+}
