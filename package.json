@@ -1,0 +1,16 @@
+{
+  "name": "dbasefy",
+  "version": "1.0.0",
+  "description": "Framework to handler databases SQL and NoSQL OOP",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "database",
+    "SQL",
+    "Oracle"
+  ],
+  "author": "Tiago Roos de Oliveira",
+  "license": "ISC"
+}
