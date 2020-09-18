@@ -1,7 +1,7 @@
-import { MockConnection, MockItemConverter, MockItemDesc } from '../lib/Mock/MockConnection'
-import { DB } from '../lib'
+import { MockConnection, MockItemConverter, MockItemDesc } from '../src/Mock/MockConnection'
+import { DB } from '../src'
 import { expect } from 'chai'
-import { Data } from '../lib/core'
+import { Data } from '../src/core'
 
 const conn = new MockConnection()
 
