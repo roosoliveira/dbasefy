@@ -19,9 +19,9 @@ export interface Connection {
     createQuery(): Query
 }
 
-export type Action<R> = (conn: Connection) => Promise<R>
+export type ActionFn1<R> = (conn: Connection) => Promise<R>
 export class DB {
-    static async session<R>(conn: new() => Connection, action: Action<R>): Promise<R> {
+    static async session<R>(conn: new() => Connection, action: ActionFn1<R>): Promise<R> {
         const connection = await new conn().open()
         try {
             return await action(connection)

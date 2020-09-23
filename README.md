@@ -1,4 +1,8 @@
-# DBasefy
+# DBasefy (Beta)
+
+```
+npm i dbasefy
+```
 
 DBasefy is a database encapsulator library. Created in TypeScript serves to encapsulate the implementation complexity from databases, that helps on polymorphism
 
@@ -22,5 +26,3 @@ async function basicUsageSample(): Promise<void> {
 
 basicUsageSample()
 ```
-
-.

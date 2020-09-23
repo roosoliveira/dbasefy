@@ -1,7 +1,10 @@
 import { Command, Connection, Query } from '..'
 import JsonConfig from '../config/JsonConfig'
 import { Converter, Data } from '../core'
+import { SqlCommand, SqlConnection, SqlQuery, Transaction } from '../SQL'
+import { SqlFilter, SqlStatement, SqlStatementProvider } from '../SQL/statements'
 import Util from '../Utils'
+import { MockSqlStatementProvider } from './MockSqlStatementProvider'
 
 export interface MockConfig {
     user: string
@@ -32,7 +35,9 @@ export class MockData implements Data {
 
 }
 
-export class MockCommand implements Command {
+export class MockCommand implements SqlCommand {
+    commandText: string
+    binds: Data
 
     async execute(): Promise<void> {
         await Util.delay()
@@ -40,7 +45,10 @@ export class MockCommand implements Command {
 
 }
 
-export class MockQuery implements Query {
+export class MockQuery implements SqlQuery {
+    commandText: string
+    binds: Data
+    
     async execute(): Promise<Data[]> {
         await Util.delay()
 
@@ -56,7 +64,7 @@ export class MockQuery implements Query {
     }
 }
 
-export class MockConnection implements Connection {
+export class MockConnection implements SqlConnection {
 
     user: string
     password: string
@@ -64,6 +72,14 @@ export class MockConnection implements Connection {
     constructor() {
         this.user = ''
         this.password = ''
+    }
+
+    createTransaction(): Transaction {
+        throw new Error('Method not implemented.')
+    }
+
+    createSqlStatementProvider(): SqlStatementProvider {
+        return new MockSqlStatementProvider()
     }
 
     async open(): Promise<Connection> {
@@ -79,11 +95,15 @@ export class MockConnection implements Connection {
         return this
     }
 
-    createCommand(): Command {
+    createCommand(): Command
+    createCommand(statement: SqlStatement): SqlCommand
+    createCommand(statement?: SqlStatement): SqlCommand {
         return new MockCommand()
     }
 
-    createQuery(): Query {
+    createQuery(): Query
+    createQuery(statement: SqlStatement): SqlQuery
+    createQuery(statement?: SqlStatement): SqlQuery {
         return new MockQuery()
     }
     

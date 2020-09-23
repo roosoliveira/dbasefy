@@ -1,5 +1,7 @@
+.vscode
 package-lock.json
 config
+src/debug.ts
 
 # Logs
 logs

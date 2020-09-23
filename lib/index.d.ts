@@ -14,7 +14,7 @@ export interface Connection {
     createCommand(): Command;
     createQuery(): Query;
 }
-export declare type Action<R> = (conn: Connection) => Promise<R>;
+export declare type ActionFn1<R> = (conn: Connection) => Promise<R>;
 export declare class DB {
-    static session<R>(conn: new () => Connection, action: Action<R>): Promise<R>;
+    static session<R>(conn: new () => Connection, action: ActionFn1<R>): Promise<R>;
 }

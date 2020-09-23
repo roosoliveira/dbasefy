@@ -1,6 +1,6 @@
 {
   "name": "dbasefy",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Framework to handler databases SQL and NoSQL OOP",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -14,18 +14,22 @@
   "keywords": [
     "database",
     "SQL",
-    "Oracle"
+    "Oracle",
+    "framework",
+    "dbasefy-oracle"
   ],
   "author": "Tiago Roos de Oliveira",
   "license": "ISC",
   "dependencies": {
-    "config": "^3.3.1"
+    "config": "^3.3.1",
+    "ramda": "^0.27.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/config": "0.0.36",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.10.3",
+    "@types/ramda": "^0.27.18",
     "chai": "^4.2.0",
     "mocha": "^8.1.3",
     "ts-node": "^9.0.0",
