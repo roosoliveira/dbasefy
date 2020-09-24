@@ -143,3 +143,9 @@ DB.session(MockConnection, async (conn: MockConnection) => {
     await conn.createCommand(statement).execute()
 })
 ```
+
+#### Connections
+
+Available connections:
+
+- [Oracle](https://www.npmjs.com/package/dbasefy-oracle)
