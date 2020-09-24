@@ -1,7 +1,7 @@
 {
   "name": "dbasefy",
-  "version": "1.0.3",
-  "description": "Framework to handler databases SQL and NoSQL OOP",
+  "version": "1.0.4",
+  "description": "Framework to handler databases SQL OOP",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {

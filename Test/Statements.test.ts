@@ -16,6 +16,7 @@ describe('Creation of SQL Statements', () => {
             .toStatement()
 
         expect(statement.commandText).to.be.equal('SELECT ID, TEXT FROM TEST_TABLE WHERE 1=1 AND ID = :FILTER_0_0')
+        expect(statement.binds).to.own.include({ FILTER_0_0: 10 })
     })
 
     it('Select Statement with two filters', async() => {
@@ -29,6 +30,7 @@ describe('Creation of SQL Statements', () => {
             .toStatement()
 
         expect(statement.commandText).to.be.equal('SELECT ID, TEXT FROM TEST_TABLE WHERE 1=1 AND ID = :FILTER_0_0 AND TEXT != :FILTER_1_0')
+        expect(statement.binds).to.own.include({ FILTER_0_0: 10, FILTER_1_0: 'Test' })
     })
 
     it('Select Statement without WHERE', async() => {
@@ -51,6 +53,7 @@ describe('Creation of SQL Statements', () => {
             .toStatement()
 
         expect(statement.commandText).to.be.equal('INSERT INTO TEST_TABLE (ID, TEXT) VALUES (:ID, :TEXT)')
+        expect(statement.binds).to.own.include({ ID: 10, TEXT: 'Tst' })
     })
 
     it('Update Statement', async() => {
@@ -60,8 +63,9 @@ describe('Creation of SQL Statements', () => {
             .set('TEXT', 'tst')
             .where.field('ID').equal(10)
             .toStatement()
-
+            
         expect(statement.commandText).to.be.equal('UPDATE TEST_TABLE SET TEXT = :TEXT WHERE 1=1 AND ID = :FILTER_0_0')
+        expect(statement.binds).to.own.include({ TEXT: 'tst', FILTER_0_0: 10 })
     })
 
     it('Delete Statement', async() => {
@@ -70,8 +74,9 @@ describe('Creation of SQL Statements', () => {
             .from('TEST_TABLE')
             .where.field('ID').equal(10)
             .toStatement()
-
+            
         expect(statement.commandText).to.be.equal('DELETE FROM TEST_TABLE WHERE 1=1 AND ID = :FILTER_0_0')
+        expect(statement.binds).to.own.include({ FILTER_0_0: 10 })
     })
 
 })

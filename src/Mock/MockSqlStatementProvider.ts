@@ -17,7 +17,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
         const template = `INSERT INTO ${tableName} (%FIELDS%) VALUES (%VALUES%)`
         const fields = Object.keys(data)
         const values = fields.map(toBindName)
-        const binds = mergeAll(fields.map(field => data[field]))
+        const binds = mergeAll(fields.map(field => ({ [field]: data[field] }))) as Data
         const commandText = template
             .replace(/%FIELDS%/g, commaJoin(fields))
             .replace(/%VALUES%/g, commaJoin(values))
@@ -29,7 +29,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
         const fields = Object.keys(data)
         const values = fields.map(toValues)
         const commandText = template.replace(/%VALUES%/g, commaJoin(values))
-        const binds = mergeAll(fields.map(field => data[field]))
+        const binds = mergeAll(fields.map(field => ({ [field]: data[field] }))) as Data
         return { commandText, binds }
 
         function toValues(field: string): string {
@@ -83,13 +83,13 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
                 case SqlCondition.EQUAL: 
                 case SqlCondition.DIFFERENT: 
                     commandText = toBindName('FILTER_' + indexFilter + '_0')
-                    binds[commandText] = filter.value
+                    binds[commandText.replace(':', '')] = filter.value
                     break
 
                 case SqlCondition.IN: 
                     const bindNames = filter.value.map((value, index) => {
                         const key = toBindName('FILTER_' + indexFilter + '_' + index)
-                        binds[key] = value
+                        binds[key.replace(':', '')] = value
                         return key
                     })
                     commandText = `(${commaJoin(bindNames)})`
