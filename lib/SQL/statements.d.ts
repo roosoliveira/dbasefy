@@ -1,7 +1,9 @@
-import { Data } from '../core';
+export declare type Variant = {
+    [key: string]: any;
+};
 export interface SqlStatement {
     commandText: string;
-    binds?: Data;
+    binds?: Variant;
 }
 export declare enum SqlCondition {
     EQUAL = 0,
@@ -14,8 +16,8 @@ export interface SqlFilter {
     value: any;
 }
 export interface SqlStatementProvider {
-    insert(tableName: string, data: Data): SqlStatement;
-    update(tableName: string, data: Data): SqlStatement;
+    insert(tableName: string, data: Variant): SqlStatement;
+    update(tableName: string, data: Variant): SqlStatement;
     delete(tableName: string): SqlStatement;
     select(tableName: string, fields: string[]): SqlStatement;
     where(filters: SqlFilter[]): SqlStatement;

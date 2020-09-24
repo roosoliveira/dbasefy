@@ -1,6 +1,5 @@
 import { bind, filter, join, mergeAll, replace } from 'ramda'
-import { Data } from '../core'
-import { SqlCondition, SqlFilter, SqlStatement, SqlStatementProvider } from '../SQL/statements'
+import { SqlCondition, SqlFilter, SqlStatement, SqlStatementProvider, Variant } from '../SQL/statements'
 
 const commaJoin = join(', ')
 const toBindName = (field: string): string => ':' + field
@@ -13,23 +12,23 @@ interface SqlFilterSimplified {
 
 export class MockSqlStatementProvider implements SqlStatementProvider {
 
-    insert(tableName: string, data: Data): SqlStatement {
+    insert(tableName: string, data: Variant): SqlStatement {
         const template = `INSERT INTO ${tableName} (%FIELDS%) VALUES (%VALUES%)`
         const fields = Object.keys(data)
         const values = fields.map(toBindName)
-        const binds = mergeAll(fields.map(field => ({ [field]: data[field] }))) as Data
+        const binds = mergeAll(fields.map(field => ({ [field]: data[field] })))
         const commandText = template
             .replace(/%FIELDS%/g, commaJoin(fields))
             .replace(/%VALUES%/g, commaJoin(values))
         return { commandText, binds }
     }
 
-    update(tableName: string, data: Data): SqlStatement {
+    update(tableName: string, data: Variant): SqlStatement {
         const template = `UPDATE ${tableName} SET %VALUES%`
         const fields = Object.keys(data)
         const values = fields.map(toValues)
         const commandText = template.replace(/%VALUES%/g, commaJoin(values))
-        const binds = mergeAll(fields.map(field => ({ [field]: data[field] }))) as Data
+        const binds = mergeAll(fields.map(field => ({ [field]: data[field] })))
         return { commandText, binds }
 
         function toValues(field: string): string {
@@ -39,13 +38,13 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
 
     delete(tableName: string): SqlStatement {
         const commandText = `DELETE FROM ${tableName}`
-        return { commandText, binds: {} as Data }
+        return { commandText, binds: {} }
     }
 
     select(tableName: string, fields: string[]): SqlStatement {
         const template = `SELECT %FIELDS% FROM ${tableName}`
         const commandText = template.replace(/%FIELDS%/g, commaJoin(fields))
-        return { commandText, binds: {} as Data }
+        return { commandText, binds: {} }
     }
 
     where(filters: SqlFilter[]): SqlStatement {
@@ -77,7 +76,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
 
         function toBinds(filter: SqlFilter, indexFilter: number): SqlStatement {
             let commandText = ''
-            let binds = {} as Data
+            let binds = {}
 
             switch (filter.condition) {
                 case SqlCondition.EQUAL: 
@@ -100,7 +99,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
             return { commandText, binds }
         }
 
-        function onlyBinds(filter: SqlFilterSimplified): Data {
+        function onlyBinds(filter: SqlFilterSimplified): Variant {
             return filter.statement.binds
         }
     }

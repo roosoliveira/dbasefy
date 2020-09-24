@@ -25,18 +25,3 @@ export interface TableSchema extends Data {
     getTableName(): string
     getPrimaryKeys(): string[]
 }
-
-
-
-// export abstract class Table {
-//     private $schema: TableSchema
-
-//     constructor(schema: TableSchema) {
-//         this.$schema = schema
-//     }
-
-//     abstract insert(data: Data): Promise<Table>
-//     abstract update(data: Data): Promise<Table>
-//     abstract delete(data: Data): Promise<Table>
-//     abstract where(data: SqlWhere): Promise<Table>
-// }
