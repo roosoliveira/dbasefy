@@ -1,6 +1,6 @@
 {
   "name": "dbasefy",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Framework to handler databases SQL OOP",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
