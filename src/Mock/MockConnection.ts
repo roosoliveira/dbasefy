@@ -1,8 +1,7 @@
 import { Command, Connection, Query } from '..'
 import JsonConfig from '../config/JsonConfig'
-import { Converter, Data } from '../core'
 import { SqlCommand, SqlConnection, SqlQuery, Transaction } from '../SQL'
-import { SqlFilter, SqlStatement, SqlStatementProvider } from '../SQL/statements'
+import { SqlStatement, SqlStatementProvider } from '../SQL/statements'
 import Util from '../Utils'
 import { MockSqlStatementProvider } from './MockSqlStatementProvider'
 
@@ -15,29 +14,9 @@ export interface MockItemDesc {
     description: string
 }
 
-export class MockItemConverter implements Converter<{ description: string }> {
-
-    convertTo(value: any): { description: string } {
-        return {
-            description: `(${value.ID}) ${value.TEXT}`
-        }
-    }
-
-}
-
-export class MockData implements Data {
-    
-    [key: string]: any
-
-    convertTo<T>(converter: new () => Converter<T>): T {
-        return new converter().convertTo(this)
-    }
-
-}
-
 export class MockCommand implements SqlCommand {
     commandText: string
-    binds: Data
+    binds: any
 
     async execute(): Promise<void> {
         await Util.delay()
@@ -47,20 +26,14 @@ export class MockCommand implements SqlCommand {
 
 export class MockQuery implements SqlQuery {
     commandText: string
-    binds: Data
+    binds: any
     
-    async execute(): Promise<Data[]> {
+    async execute(): Promise<any[]> {
         await Util.delay()
-
-        const item1 = new MockData()
-        item1.ID = 1
-        item1.TEXT = 'Item 1'
-
-        const item2 = new MockData()
-        item2.ID = 2
-        item2.TEXT = 'Item 3'
-
-        return [ item1, item2 ]
+        return [ 
+            { ID: 1, TEXT: 'Item 1' },  
+            { ID: 2, TEXT: 'Item 2' }
+        ]
     }
 }
 

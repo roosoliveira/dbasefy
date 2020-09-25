@@ -1,11 +1,8 @@
-import { isEmpty, isNil, mergeAll } from 'ramda'
-import { Data } from '../core'
-
-export type Variant = { [key: string]: any }
+import { isNil, mergeAll } from 'ramda'
 
 export interface SqlStatement {
     commandText: string
-    binds?: Variant
+    binds?: any
 }
 
 export enum SqlCondition {
@@ -21,8 +18,8 @@ export interface SqlFilter {
 }
 
 export interface SqlStatementProvider {
-    insert(tableName: string, data: Variant): SqlStatement
-    update(tableName: string, data: Variant): SqlStatement
+    insert(tableName: string, data: any): SqlStatement
+    update(tableName: string, data: any): SqlStatement
     delete(tableName: string): SqlStatement
     select(tableName: string, fields: string[]): SqlStatement
     where(filters: SqlFilter[]): SqlStatement
@@ -40,7 +37,7 @@ export class WhereSqlStatement implements SqlStatementBuilder {
     private $tempFilter: SqlFilter
 
     get and(): WhereSqlStatement {
-        this.addFilter()
+        if (this.$tempFilter.expression) this.addFilter()
         return this
     }
 
@@ -109,7 +106,7 @@ export class InsertSqlStatement implements SqlStatementBuilder  {
 
     private $provider: SqlStatementProvider
     private $tableName: string
-    private $data: Variant
+    private $data: any
 
     constructor(provider: SqlStatementProvider) {
         this.$provider = provider
@@ -136,7 +133,7 @@ export class UpdateSqlStatement implements SqlStatementBuilder  {
 
     private $provider: SqlStatementProvider
     private $tableName: string
-    private $data: Variant
+    private $data: any
     private $where: WhereSqlStatement
 
     get where(): WhereSqlStatement {

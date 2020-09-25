@@ -1,5 +1,5 @@
-import { bind, filter, join, mergeAll, replace } from 'ramda'
-import { SqlCondition, SqlFilter, SqlStatement, SqlStatementProvider, Variant } from '../SQL/statements'
+import { join, mergeAll } from 'ramda'
+import { SqlCondition, SqlFilter, SqlStatement, SqlStatementProvider } from '../SQL/statements'
 
 const commaJoin = join(', ')
 const toBindName = (field: string): string => ':' + field
@@ -12,7 +12,7 @@ interface SqlFilterSimplified {
 
 export class MockSqlStatementProvider implements SqlStatementProvider {
 
-    insert(tableName: string, data: Variant): SqlStatement {
+    insert(tableName: string, data: any): SqlStatement {
         const template = `INSERT INTO ${tableName} (%FIELDS%) VALUES (%VALUES%)`
         const fields = Object.keys(data)
         const values = fields.map(toBindName)
@@ -23,7 +23,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
         return { commandText, binds }
     }
 
-    update(tableName: string, data: Variant): SqlStatement {
+    update(tableName: string, data: any): SqlStatement {
         const template = `UPDATE ${tableName} SET %VALUES%`
         const fields = Object.keys(data)
         const values = fields.map(toValues)
@@ -99,7 +99,7 @@ export class MockSqlStatementProvider implements SqlStatementProvider {
             return { commandText, binds }
         }
 
-        function onlyBinds(filter: SqlFilterSimplified): Variant {
+        function onlyBinds(filter: SqlFilterSimplified): any {
             return filter.statement.binds
         }
     }

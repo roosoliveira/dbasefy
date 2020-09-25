@@ -1,4 +1,3 @@
-import { Data } from '../core'
 import { Command, Connection, Query } from '..'
 import { SqlStatement, SqlStatementProvider } from './statements'
 
@@ -19,9 +18,4 @@ export abstract class SqlConnection implements Connection {
     abstract createQuery(): Query
     abstract createQuery(statement: SqlStatement): SqlQuery
     abstract createSqlStatementProvider(): SqlStatementProvider
-}
-
-export interface TableSchema extends Data {
-    getTableName(): string
-    getPrimaryKeys(): string[]
 }

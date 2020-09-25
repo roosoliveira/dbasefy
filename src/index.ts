@@ -1,11 +1,9 @@
-import { Data } from './core'
-
 export interface Config<T> {
     read(providerName: string): Promise<T>
 }
 
 export interface Query {
-    execute(): Promise<Data[]>
+    execute(): Promise<any[]>
 }
 
 export interface Command {

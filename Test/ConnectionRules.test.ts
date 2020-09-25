@@ -1,12 +1,13 @@
-import { MockConnection, MockItemConverter, MockItemDesc } from '../src/Mock/MockConnection'
+import { MockConnection, MockItemDesc } from '../src/Mock/MockConnection'
 import { DB } from '../src'
 import { expect } from 'chai'
-import { Data } from '../src/core'
 
 const conn = new MockConnection()
 
-function toItem(data: Data): MockItemDesc {
-    return data.convertTo<MockItemDesc>(MockItemConverter)
+function toItem(data: any): MockItemDesc {
+    return {
+        description: `${data.ID} - ${data.TEXT}`
+    }
 }
 
 function testItem(item: MockItemDesc) {

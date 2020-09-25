@@ -1,5 +1,4 @@
 import { SqlConnection } from '.'
-import { RowConverter } from './RowConverter'
 import { 
     DeleteSqlStatement, InsertSqlStatement, SelectSqlStatement, 
     SqlStatementBuilder, SqlStatementProvider, UpdateSqlStatement, 
@@ -21,18 +20,18 @@ export class Crud<T> {
     async insert(row: T): Promise<void> {
         const insert = new InsertSqlStatement(this.$provider).into(this.$tableName)
         Object.keys(row).forEach(key => insert.value(key, row[key]))
-        this.executeCommand(insert)
+        await this.executeCommand(insert)
     }
 
     async update(row: T, where: WhereSqlStatement): Promise<void> {
         const update = new UpdateSqlStatement(this.$provider).on(this.$tableName)
         Object.keys(row).forEach(key => update.set(key, row[key]))
-        this.executeCommand(update.where = where)
+        await this.executeCommand(update.where = where)
     }
 
     async delete(where: WhereSqlStatement): Promise<void> {
         const del = new DeleteSqlStatement(this.$provider).from(this.$tableName)
-        this.executeCommand(del.where = where)
+        await this.executeCommand(del.where = where)
     }
 
     async fetch(where: WhereSqlStatement): Promise<T[]> {
@@ -44,7 +43,7 @@ export class Crud<T> {
         const rows = await this.$conn
             .createQuery(select.toStatement())
             .execute()
-        return rows.map(row => row.convertTo<T>(RowConverter))
+        // return rows.map(row => row.convertTo<T>(RowConverter))
     }
 
     private async executeCommand(builder: SqlStatementBuilder): Promise<void> {
