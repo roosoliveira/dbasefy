@@ -55,7 +55,7 @@ export default class WhereSqlStatement implements SqlStatementBuilder {
     }
 
     between(value: any[]): WhereSqlStatement {
-        this.$tempFilter.condition = SqlCondition.DIFFERENT
+        this.$tempFilter.condition = SqlCondition.BETWEEN
         this.$tempFilter.value = value
         return this
     }
