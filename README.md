@@ -146,7 +146,7 @@ DB.session(MockConnection, async (conn: MockConnection) => {
 
 #### Tables
 
-Extends of `Table` class to create a representation of table and to be able have access the methods like `insert`, `update`, `delete` and `select`. Sample:
+Extend of `Table` class to create a representation of table and to be able have access the methods like `insert`, `update`, `delete` and `select`. Sample:
 
 ```sql
 /*TABLE SAMPLE*/
@@ -173,12 +173,26 @@ class TestTable extends Table {
 }
 
 DB.session(MockConnection, async (conn: MockConnection) => {
-    const test = new TestTable(conn.createSqlStatementProvider())
-    test.ID = 1
-    test.DESCRIPTION = 'Description test'
-    test.DATE = new Date()
+    const trx = conn.createTransaction()
+    try {
+        const test = new TestTable(conn.createSqlStatementProvider())
+        test.ID = 1
+        test.DESCRIPTION = 'Description test'
+        test.DATE = new Date()
 
-    DB.execCommand(conn, test.insert())
+        await DB.execCommand(conn, test.insert())
+
+        test.DESCRIPTION = 'descrition TEST'
+
+        await DB.execCommand(conn, test.update().where.field('ID').equal(1))
+
+        await trx.commit()
+    } catch(err) {
+
+        await trx.rollback()
+        throw err
+
+    }
 })
 ```
 
