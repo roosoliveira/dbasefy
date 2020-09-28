@@ -1,15 +1,15 @@
-import { Data } from '../core';
 import { Command, Connection, Query } from '..';
 import { SqlStatement, SqlStatementProvider } from './statements';
-export interface Transaction {
+import Table from './Table';
+interface Transaction {
     commit(): Promise<void>;
     rollback(): Promise<void>;
 }
-export interface SqlQuery extends Query, SqlStatement {
+interface SqlQuery extends Query, SqlStatement {
 }
-export interface SqlCommand extends Command, SqlStatement {
+interface SqlCommand extends Command, SqlStatement {
 }
-export declare abstract class SqlConnection implements Connection {
+declare abstract class SqlConnection implements Connection {
     abstract open(): Promise<Connection>;
     abstract close(): Promise<Connection>;
     abstract createTransaction(): Transaction;
@@ -19,7 +19,4 @@ export declare abstract class SqlConnection implements Connection {
     abstract createQuery(statement: SqlStatement): SqlQuery;
     abstract createSqlStatementProvider(): SqlStatementProvider;
 }
-export interface TableSchema extends Data {
-    getTableName(): string;
-    getPrimaryKeys(): string[];
-}
+export { Transaction, SqlQuery, SqlCommand, SqlConnection, Table };

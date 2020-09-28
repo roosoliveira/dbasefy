@@ -1,5 +1,4 @@
 import { Command, Connection, Query } from '..';
-import { Converter, Data } from '../core';
 import { SqlCommand, SqlConnection, SqlQuery, Transaction } from '../SQL';
 import { SqlStatement, SqlStatementProvider } from '../SQL/statements';
 export interface MockConfig {
@@ -9,26 +8,15 @@ export interface MockConfig {
 export interface MockItemDesc {
     description: string;
 }
-export declare class MockItemConverter implements Converter<{
-    description: string;
-}> {
-    convertTo(value: any): {
-        description: string;
-    };
-}
-export declare class MockData implements Data {
-    [key: string]: any;
-    convertTo<T>(converter: new () => Converter<T>): T;
-}
 export declare class MockCommand implements SqlCommand {
     commandText: string;
-    binds: Data;
+    binds: any;
     execute(): Promise<void>;
 }
 export declare class MockQuery implements SqlQuery {
     commandText: string;
-    binds: Data;
-    execute(): Promise<Data[]>;
+    binds: any;
+    execute(): Promise<any[]>;
 }
 export declare class MockConnection implements SqlConnection {
     user: string;

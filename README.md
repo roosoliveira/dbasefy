@@ -144,6 +144,44 @@ DB.session(MockConnection, async (conn: MockConnection) => {
 })
 ```
 
+#### Tables
+
+Extends of `Table` class to create a representation of table and to be able have access the methods like `insert`, `update`, `delete` and `select`. Sample:
+
+```sql
+/*TABLE SAMPLE*/
+CREATE TABLE TEST (
+  ID NUMBER(22) NOT NULL,
+  DESCRIPTION VARCHAR2(250) NOT NULL,
+  CREATION_DATE DATE NOT NULL,
+);
+```
+
+```typescript
+import { DB } from 'dbasefy'
+import { Table } from 'dbasefy/lib/SQL'
+
+// typescript representation of table
+class TestTable extends Table {
+    ID: number
+    DESCRIPTION: string
+    DATE: Date
+
+    getTableName(): string {
+        return 'TEST'
+    }
+}
+
+DB.session(MockConnection, async (conn: MockConnection) => {
+    const test = new TestTable(conn.createSqlStatementProvider())
+    test.ID = 1
+    test.DESCRIPTION = 'Description test'
+    test.DATE = new Date()
+
+    DB.execCommand(conn, test.insert())
+})
+```
+
 #### Connections
 
 Available connections:
