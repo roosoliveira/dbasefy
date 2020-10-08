@@ -1,4 +1,4 @@
-import { not } from 'ramda'
+import { isEmpty, not } from 'ramda'
 import { DeleteSqlStatement, InsertSqlStatement, SelectSqlStatement, SqlStatementProvider, UpdateSqlStatement } from './statements'
 
 export default abstract class Table {
@@ -34,7 +34,9 @@ export default abstract class Table {
     select(): SelectSqlStatement {
         const select = new SelectSqlStatement(this.$provider)
         select.from(this.getTableName())
-        this.getFields().forEach(k => select.field(k))
+        const fields = this.getFields()
+        if (isEmpty(fields)) select.field('*')
+        else this.getFields().forEach(k => select.field(k))
         return select
     }
 

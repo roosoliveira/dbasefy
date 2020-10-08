@@ -4,27 +4,49 @@
 npm i dbasefy
 ```
 
-DBasefy is a database encapsulator library. Created in TypeScript serves to encapsulate the implementation complexity from databases, that helps on polymorphism
+DBasefy is a framework that encapsulate database libraries. Easy to use, created in *TypeScript*, serves to facilitate the use of several databases without that you need change a lot of lines of code.
 
 ```typescript
-import { Connection } from 'dbasefy'
+import { SqlConnection } from 'dbasefy/lib/SQL'
+import { OracleConnection } from 'dbasefy-oracle/lib' // install separately
 
-const createConnection(): Connention {
-    // Mock is just a testable class, simply to simulate a connection class
-    return new MockConnection()
+const createConnection(provider: string): SqlConnection {
+    const connention: SqlConnenction
+    switch (provider) {
+        case 'mock': 
+            connention = new MockConnection()
+            break
+
+        case 'oracle': 
+            connection = new OracleConnection()
+            break
+
+        default:
+            throw new Error(`${provider} not implemented yet`)
+    }
+    return connection
 }
 
-async function basicUsageSample(): Promise<void> {
-    const conn = await createConnection().open()
+async function getDataSample(provide: string): Promise<void> {
+    const conn = await createConnection(provide).open()
     try {
-        const cmd = conn.createCommand()
-        await cmd.execute()
+        return await conn
+            .createQuery({ commandText: 'SELECT...' // SQL statement })
+            .execute()
     } finally {
         await conn.close()
     }
 }
 
-basicUsageSample()
+async function run(environment: string) {
+    const provider = 'oracle'
+    if (environment === 'test') {
+        provider = 'mock'
+    }
+    console.log(await getDataSample(provider))
+}
+
+run('test')
 ```
 
 ### SQL Statements
@@ -60,6 +82,8 @@ DB.session(MockConnection, async (conn: MockConnection) => {
     const rows = await conn.createQuery(statement).execute()
 })
 ```
+
+If you need to create a more complex select statement, you should use `string` declaration instead a `SelectSqlStatement`
 
 #### INSERT
 
@@ -146,7 +170,7 @@ DB.session(MockConnection, async (conn: MockConnection) => {
 
 #### Tables
 
-Extend of `Table` class to create a representation of table and to be able have access the methods like `insert`, `update`, `delete` and `select`. Sample:
+You can extends from `Table` class to create a representation of SQL table and to be able have access the methods like `insert`, `update`, `delete` and `select`. Sample:
 
 ```sql
 /*TABLE SAMPLE*/
@@ -158,10 +182,9 @@ CREATE TABLE TEST (
 ```
 
 ```typescript
-import { DB } from 'dbasefy'
 import { Table } from 'dbasefy/lib/SQL'
 
-// typescript representation of table
+// typescript representation of SQL table
 class TestTable extends Table {
     ID: number
     DESCRIPTION: string
@@ -171,6 +194,11 @@ class TestTable extends Table {
         return 'TEST'
     }
 }
+```
+
+```typescript
+import { DB } from 'dbasefy'
+import { Table } from 'dbasefy/lib/SQL'
 
 DB.session(MockConnection, async (conn: MockConnection) => {
     const trx = conn.createTransaction()
@@ -193,7 +221,7 @@ DB.session(MockConnection, async (conn: MockConnection) => {
         throw err
 
     }
-})
+}
 ```
 
 #### Connections
