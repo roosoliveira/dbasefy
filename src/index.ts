@@ -10,7 +10,7 @@ export interface Query {
 }
 
 export interface Command {
-    execute(): Promise<void>
+    execute(): Promise<any>
 }
 
 export interface Connection {
