@@ -7,7 +7,7 @@ export interface Query {
     execute(): Promise<any[]>;
 }
 export interface Command {
-    execute(): Promise<void>;
+    execute(): Promise<any>;
 }
 export interface Connection {
     open(): Promise<Connection>;
